@@ -2,5 +2,14 @@
 a book store online retailer build in Microservices.
 
 
-![alt text](https://github.com/[K2101]/[bookstore.dev]/blob/[master]/bookstore.dev.png?raw=true)
+
+Architecture
 ![Screenshot](bookstore.dev.png)
+
+
+Client(frontend)
+![Screenshot](client1.png)
+![Screenshot](client2.png)
+![Screenshot](client3.png)
+![Screenshot](client4.png)
+
