@@ -1,0 +1,126 @@
+# apiVersion: skaffold/v2beta10
+# kind: Config
+# metadata:
+#   name: bookstore
+# build:
+#   local:
+#     push: false
+#   artifacts:
+#     - image: auttaponkhumhiran/book
+#       context: services/book
+#       docker:
+#         dockerfile: Dockerfile
+# deploy:
+#   kubectl:
+#     manifests:
+#       - infra/k8s/*
+# apiVersion: skaffold/v2alpha3
+apiVersion: skaffold/v2beta10
+kind: Config
+metadata:
+  name: bookstore
+build:
+  local:
+    push: false
+  artifacts:
+    - image: auttaponkhumhiran/book
+      context: services/book
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: auttaponkhumhiran/order
+      context: services/order
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: auttaponkhumhiran/payment
+      context: services/payment
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: auttaponkhumhiran/auth
+      context: services/auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: './**/*.go'
+            dest: .
+    - image: auttaponkhumhiran/customer
+      context: services/customer
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    # - image: auttaponkhumhiran/client
+    #   context: services/client
+    #   docker:
+    #     dockerfile: Dockerfile
+    #   sync:
+    #     manual:
+    #       - src: 'src/**/*.js'
+    #         dest: .
+deploy:
+  kubectl:
+    manifests:
+      - infra/k8s/*
+  # artifacts:
+  #   - image: auttaponkhumhiran/book
+  #     context: services/book
+  #     docker:
+  #       dockerfile: Dockerfile
+  #     sync:
+  #       manual:
+  #         - src: 'src/**/*.ts'
+  #           dest: .
+  # - image: stephengrider/client
+  #   context: client
+  #   docker:
+  #     dockerfile: Dockerfile
+  #   sync:
+  #     manual:
+  #       - src: '**/*.js'
+  #         dest: .
+  # - image: stephengrider/tickets
+  #   context: tickets
+  #   docker:
+  #     dockerfile: Dockerfile
+  #   sync:
+  #     manual:
+  #       - src: 'src/**/*.ts'
+  #         dest: .
+  # - image: stephengrider/orders
+  #   context: orders
+  #   docker:
+  #     dockerfile: Dockerfile
+  #   sync:
+  #     manual:
+  #       - src: 'src/**/*.ts'
+  #         dest: .
+  # - image: stephengrider/expiration
+  #   context: expiration
+  #   docker:
+  #     dockerfile: Dockerfile
+  #   sync:
+  #     manual:
+  #       - src: 'src/**/*.ts'
+  #         dest: .
+  # - image: stephengrider/payments
+  #   context: payments
+  #   docker:
+  #     dockerfile: Dockerfile
+  #   sync:
+  #     manual:
+  #       - src: 'src/**/*.ts'
+  #         dest: .

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customer
+  template:
+    metadata:
+      labels:
+        app: customer
+    spec:
+      containers:
+        - name: customer
+          image: auttaponkhumhiran/customer
+          env:
+            - name: KAFKA_BROKER_IP_PRODUCER
+              value: 'kafka2-0.kafka2-headless.default.svc.cluster.local:9092'
+            - name: CASSANDRA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cassandra-password
+                  key: CASSANDRA_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: customer-srv
+spec:
+  selector:
+    app: customer
+  ports:
+    - name: customer
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

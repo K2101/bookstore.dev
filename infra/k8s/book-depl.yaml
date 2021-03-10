@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book
+  template:
+    metadata:
+      labels:
+        app: book
+    spec:
+      containers:
+        - name: book
+          image: auttaponkhumhiran/book
+          env:
+            - name: KAFKA_BROKER_IP_PRODUCER
+              value: 'kafka2-0.kafka2-headless.default.svc.cluster.local:9092'
+            - name: KAFKA_BROKER_IP_CONSUMER
+              value: 'kafka2.default.svc.cluster.local:9092'
+            - name: MONGO_URI
+              value: 'mongodb://book-mongo-srv:27017/book'
+            # - name: JWT_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: jwt-secret
+            #       key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: book-srv
+spec:
+  selector:
+    app: book
+  ports:
+    - name: book
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

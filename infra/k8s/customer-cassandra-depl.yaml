@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-casssandra-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customer-casssandra
+  template:
+    metadata:
+      labels:
+        app: customer-casssandra
+    spec:
+      containers:
+        - name: customer-casssandra
+          image: cassandra
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: customer-casssandra-srv
+spec:
+  selector:
+    app: customer-casssandra
+  ports:
+    - name: db
+      protocol: TCP
+      port: 9042
+      # targetPort: 9042

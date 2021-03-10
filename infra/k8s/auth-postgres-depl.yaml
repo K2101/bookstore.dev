@@ -1,0 +1,79 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: auth-postgres-depl
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: auth-postgres
+#   template:
+#     metadata:
+#       labels:
+#         app: auth-postgres
+#     spec:
+#       containers:
+#         - name: auth-postgres
+#           image: postgres
+#           ports:
+#             - containerPort: 5432
+#           env:
+#             - name: PGUSER
+#               value: postgres
+#             - name: PGHOST
+#               value: auth-postgres-srv
+#             - name: PGPORT
+#               value: '5432'
+#             - name: PGDATABASE
+#               value: postgres
+#             - name: POSTGRES_PASSWORD
+#               value: postgres
+#             - name: POSTGRES_HOST_AUTH_METHOD
+#               value: trust
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: auth-postgres-srv
+# spec:
+#   selector:
+#     app: auth-postgres
+#   ports:
+#     - name: db
+#       protocol: TCP
+#       port: 5432
+#       targetPort: 5432
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: postgres
+  template:
+    metadata:
+      labels:
+        component: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: 'postgres'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432

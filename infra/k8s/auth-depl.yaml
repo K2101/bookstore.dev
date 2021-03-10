@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: auttaponkhumhiran/auth
+          # env:
+          #   - name: KAFKA_BROKER_IP_PRODUCER
+          #     value: 'kafka2-0.kafka2-headless.default.svc.cluster.local:9092'
+          #   - name: KAFKA_BROKER_IP_CONSUMER
+          #     value: 'kafka2.default.svc.cluster.local:9092'
+          #   - name: MONGO_URI
+          #     value: 'mongodb://auth-mongo-srv:27017/auth'
+          #   # - name: JWT_KEY
+          #   #   valueFrom:
+          #   #     secretKeyRef:
+          #   #       name: jwt-secret
+          #   #       key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  selector:
+    app: auth
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
