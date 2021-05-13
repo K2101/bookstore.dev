@@ -7,7 +7,7 @@ Architecture
 ![Screenshot](bookstore.dev.png)
 
 
-Client(NOT YET COMPLETE)
+Client (NOT YET COMPLETE!)
 ![Screenshot](client1.png)
 ![Screenshot](client2.png)
 ![Screenshot](client3.png)
